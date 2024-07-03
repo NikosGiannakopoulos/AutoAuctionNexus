@@ -34,7 +34,7 @@ namespace Auction_Service.Application.Validations
             RuleFor(c => c.Year)
                 .NotNull()
                 .WithMessage("Year is required")
-                .Must(year => year <= DateTime.Now.Year)
+                .LessThanOrEqualTo(DateTime.Now.Year)
                 .WithMessage("Year cannot be in the future");
 
             RuleFor(x => x.HP)
@@ -75,9 +75,7 @@ namespace Auction_Service.Application.Validations
 
             RuleFor(c => c.ImageUrls)
                 .NotEmpty()
-                .WithMessage("At least one ImageUrl is required")
-                .Must(list => list.Count >= 1)
-                .WithMessage("ImageUrls must contain at least one item");
+                .WithMessage("At least one ImageUrl is required");
 
             RuleFor(x => x.AuctionStart)
                 .NotNull()

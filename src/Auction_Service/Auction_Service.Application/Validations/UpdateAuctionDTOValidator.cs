@@ -22,7 +22,7 @@ namespace Auction_Service.Application.Validations
                 .WithMessage("BuyItNowPrice must be greater than or equal to 1");
 
             RuleFor(c => c.Year)
-                .Must(year => year <= DateTime.Now.Year)
+                .LessThanOrEqualTo(DateTime.Now.Year)
                 .WithMessage("Year cannot be in the future");
 
             RuleFor(x => x.HP)
@@ -42,7 +42,7 @@ namespace Auction_Service.Application.Validations
                 .WithMessage("VIN must be exactly 17 characters long");
 
             RuleFor(c => c.ImageUrls)
-                .Must(list => list.Count >= 1)
+                .NotEmpty()
                 .WithMessage("ImageUrls must contain at least one item");
 
             RuleFor(x => x.AuctionStart)
