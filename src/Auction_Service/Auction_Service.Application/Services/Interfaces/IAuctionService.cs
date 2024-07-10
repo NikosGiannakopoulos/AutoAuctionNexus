@@ -1,13 +1,15 @@
-﻿using Auction_Service.Application.DTOs;
+﻿using Result_Manager.Results.Generics;
+using Auction_Service.Application.DTOs;
+using Result_Manager.Results.Non_Generics;
 
 namespace Auction_Service.Application.Services.Interfaces
 {
     public interface IAuctionService
     {
-        Task<List<AuctionDTO>> GetAllAuctionsAsync();
-        Task<AuctionDTO> GetAuctionByIdAsync(Guid id);
-        Task CreateAuctionAsync(CreateAuctionDTO createAuctionDTO);
-        Task UpdateAuctionAsync(Guid id, UpdateAuctionDTO updateAuctionDTO);
-        Task DeleteAuctionAsync(Guid id);
+        Task<Result<List<AuctionDTO>>> GetAllAuctionsAsync();
+        Task<Result<AuctionDTO>> GetAuctionByIdAsync(Guid id);
+        Task<Result> CreateAuctionAsync(CreateAuctionDTO createAuctionDTO);
+        Task<Result> UpdateAuctionAsync(Guid id, UpdateAuctionDTO updateAuctionDTO);
+        Task<Result> DeleteAuctionAsync(Guid id);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Auction_Service.Application.DTOs;
 using Auction_Service.Application.Extensions;
+using Result_Manager.Results.Generics.Extensions;
+using Result_Manager.Results.Non_Generics.Extensions;
 using Auction_Service.Application.Services.Interfaces;
 
 namespace Auction_Service.Presentation.Controllers
@@ -19,18 +21,38 @@ namespace Auction_Service.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AuctionDTO>>> GetAllAuctions()
         {
-            var auctions = await _service.GetAllAuctionsAsync();
-            return Ok(auctions);
+            var result = await _service.GetAllAuctionsAsync();
+
+            return result.Match(
+                onSuccess: auctions => Ok(auctions),
+                onFailure: error =>
+                {
+                    return error.Code switch
+                    {
+                        "Auction_Service.AuctionRetrievalFailed" => StatusCode(500, error.Message),
+                        _ => StatusCode(500, error.Message)
+                    };
+                }
+            );
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<AuctionDTO>> GetAuctionById(Guid id)
         {
-            var auction = await _service.GetAuctionByIdAsync(id);
+            var result = await _service.GetAuctionByIdAsync(id);
 
-            if (auction == null) return NotFound();
-
-            return Ok(auction);
+            return result.Match(
+                onSuccess: auction => Ok(auction),
+                onFailure: error =>
+                {
+                    return error.Code switch
+                    {
+                        "Auction_Service.AuctionNotFound" => NotFound(error.Message),
+                        "Auction_Service.AuctionRetrievalFailed" => StatusCode(500, error.Message),
+                        _ => StatusCode(500, error.Message)
+                    };
+                }
+            );
         }
 
         [HttpPost]
@@ -40,11 +62,24 @@ namespace Auction_Service.Presentation.Controllers
 
             var auction = createAuctionDTO.ToAuction();
 
-            await _service.CreateAuctionAsync(createAuctionDTO);
+            var result = await _service.CreateAuctionAsync(createAuctionDTO);
 
-            var auctionDTO = auction.ToAuctionDTO();
+            return result.Match(
+                onSuccess: () =>
+                {
+                    var auctionDTO = auction.ToAuctionDTO();
+                    return CreatedAtAction(nameof(GetAuctionById), new { auctionDTO.Id }, auctionDTO);
 
-            return CreatedAtAction(nameof(GetAuctionById), new { auctionDTO.Id }, auctionDTO);
+                },
+                onFailure: error =>
+                {
+                    return error.Code switch
+                    {
+                        "Auction_Service.AuctionCreationFailed" => StatusCode(500, error.Message),
+                        _ => StatusCode(500, error.Message)
+                    };
+                }
+            );
         }
 
         [HttpPut("{id}")]
@@ -54,9 +89,20 @@ namespace Auction_Service.Presentation.Controllers
 
             if (existingAuction == null) return NotFound();
 
-            await _service.UpdateAuctionAsync(id, updateAuctionDTO);
+            var result = await _service.UpdateAuctionAsync(id, updateAuctionDTO);
 
-            return NoContent();
+            return result.Match<ActionResult>(
+                onSuccess: () => NoContent(),
+                onFailure: error =>
+                {
+                    return error.Code switch
+                    {
+                        "Auction_Service.AuctionNotFound" => NotFound(error.Message),
+                        "Auction_Service.AuctionUpdateFailed" => StatusCode(500, error.Message),
+                        _ => StatusCode(500, error.Message)
+                    };
+                }
+            );
         }
 
         [HttpDelete("{id}")]
@@ -66,9 +112,20 @@ namespace Auction_Service.Presentation.Controllers
 
             if (existingAuction == null) return NotFound();
 
-            await _service.DeleteAuctionAsync(id);
+            var result = await _service.DeleteAuctionAsync(id);
 
-            return NoContent();
+            return result.Match<ActionResult>(
+                onSuccess: () => NoContent(),
+                onFailure: error =>
+                {
+                    return error.Code switch
+                    {
+                        "Auction_Service.AuctionNotFound" => NotFound(error.Message),
+                        "Auction_Service.AuctionDeletionFailed" => StatusCode(500, error.Message),
+                        _ => StatusCode(500, error.Message)
+                    };
+                }
+            );
         }
     }
 }

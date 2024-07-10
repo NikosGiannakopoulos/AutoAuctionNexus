@@ -1,4 +1,7 @@
-﻿using Auction_Service.Application.DTOs;
+﻿using Result_Manager.Results.Generics;
+using Auction_Service.Application.DTOs;
+using Auction_Service.Application.Errors;
+using Result_Manager.Results.Non_Generics;
 using Auction_Service.Domain.Entities.Enums;
 using Auction_Service.Application.Extensions;
 using Auction_Service.Domain.Repositories.Interfaces;
@@ -15,37 +18,60 @@ namespace Auction_Service.Application.Services.Implementations
             _repository = repository;
         }
 
-        public async Task<List<AuctionDTO>> GetAllAuctionsAsync()
+        public async Task<Result<List<AuctionDTO>>> GetAllAuctionsAsync()
         {
-            var auctions = await _repository.GetAllAsync();
-            return auctions.Select(auction => auction.ToAuctionDTO()).ToList();
+            var result = await _repository.GetAllAsync();
+            if (result.IsFailure)
+                return Result<List<AuctionDTO>>.Failure(result.Error);
+
+            var auctionDTOs = result.Data.Select(auction => auction.ToAuctionDTO()).ToList();
+            return Result<List<AuctionDTO>>.Success(auctionDTOs);
         }
 
-        public async Task<AuctionDTO> GetAuctionByIdAsync(Guid id)
+        public async Task<Result<AuctionDTO>> GetAuctionByIdAsync(Guid id)
         {
-            var auction = await _repository.GetByIdAsync(id);
-            return auction.ToAuctionDTO();
+            var result = await _repository.GetByIdAsync(id);
+            if (result.IsFailure)
+                return Result<AuctionDTO>.Failure(result.Error);
+
+            var auctionDTO = result.Data.ToAuctionDTO();
+            return Result<AuctionDTO>.Success(auctionDTO);
         }
 
-        public async Task CreateAuctionAsync(CreateAuctionDTO createAuctionDTO)
+        public async Task<Result> CreateAuctionAsync(CreateAuctionDTO createAuctionDTO)
         {
             var auction = createAuctionDTO.ToAuction();
-            await _repository.CreateAsync(auction);
+            var result = await _repository.CreateAsync(auction);
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
+
+            return Result.Success();
         }
 
-        public async Task UpdateAuctionAsync(Guid id, UpdateAuctionDTO updateAuctionDTO)
+        public async Task<Result> UpdateAuctionAsync(Guid id, UpdateAuctionDTO updateAuctionDTO)
         {
-            var auction = await _repository.GetByIdAsync(id);
-            if (auction.Status == Status.NotStarted)
-            {
-                updateAuctionDTO.ApplyToAuction(auction);
-                await _repository.UpdateAsync(id, auction);
-            }
+            var result = await _repository.GetByIdAsync(id);
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
+
+            if (result.Data.Status != Status.NotStarted)
+                return Result.Failure(AuctionErrors.AuctionAlreadyStarted);
+
+            updateAuctionDTO.ApplyToAuction(result.Data);
+            var updateResult = await _repository.UpdateAsync(id, result.Data);
+            if (updateResult.IsFailure)
+                return Result.Failure(updateResult.Error);
+
+            return Result.Success();
         }
 
-        public async Task DeleteAuctionAsync(Guid id)
+        public async Task<Result> DeleteAuctionAsync(Guid id)
         {
-            await _repository.DeleteAsync(id);
+            var result = await _repository.DeleteAsync(id);
+            if (result.IsFailure)
+                return Result.Failure(result.Error);
+
+            return Result.Success();
         }
     }
 }

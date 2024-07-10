@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Result_Manager\Result_Manager\Result_Manager.csproj" />
 		<ProjectReference Include="..\Auction_Service.Application\Auction_Service.Application.csproj" />
 	</ItemGroup>
 
