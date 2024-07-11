@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Auction_Service.Application.DTOs;
-using Auction_Service.Application.Extensions;
 using Result_Manager.Results.Generics.Extensions;
 using Result_Manager.Results.Non_Generics.Extensions;
 using Auction_Service.Application.Services.Interfaces;
+using Auction_Service.Application.Mappings;
 
 namespace Auction_Service.Presentation.Controllers
 {
@@ -60,14 +60,14 @@ namespace Auction_Service.Presentation.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var auction = createAuctionDTO.ToAuction();
+            var auction = MappingConfig.MapToAuction(createAuctionDTO);
 
             var result = await _service.CreateAuctionAsync(createAuctionDTO);
 
             return result.Match(
                 onSuccess: () =>
                 {
-                    var auctionDTO = auction.ToAuctionDTO();
+                    var auctionDTO = MappingConfig.MapToAuctionDTO(auction);
                     return CreatedAtAction(nameof(GetAuctionById), new { auctionDTO.Id }, auctionDTO);
 
                 },

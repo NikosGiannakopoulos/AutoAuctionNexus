@@ -2,8 +2,8 @@
 using Auction_Service.Application.DTOs;
 using Auction_Service.Application.Errors;
 using Result_Manager.Results.Non_Generics;
+using Auction_Service.Application.Mappings;
 using Auction_Service.Domain.Entities.Enums;
-using Auction_Service.Application.Extensions;
 using Auction_Service.Domain.Repositories.Interfaces;
 using Auction_Service.Application.Services.Interfaces;
 
@@ -24,7 +24,7 @@ namespace Auction_Service.Application.Services.Implementations
             if (result.IsFailure)
                 return Result<List<AuctionDTO>>.Failure(result.Error);
 
-            var auctionDTOs = result.Data.Select(auction => auction.ToAuctionDTO()).ToList();
+            var auctionDTOs = result.Data.Select(auction => MappingConfig.MapToAuctionDTO(auction)).ToList();
             return Result<List<AuctionDTO>>.Success(auctionDTOs);
         }
 
@@ -34,13 +34,13 @@ namespace Auction_Service.Application.Services.Implementations
             if (result.IsFailure)
                 return Result<AuctionDTO>.Failure(result.Error);
 
-            var auctionDTO = result.Data.ToAuctionDTO();
+            var auctionDTO = MappingConfig.MapToAuctionDTO(result.Data);
             return Result<AuctionDTO>.Success(auctionDTO);
         }
 
         public async Task<Result> CreateAuctionAsync(CreateAuctionDTO createAuctionDTO)
         {
-            var auction = createAuctionDTO.ToAuction();
+            var auction = MappingConfig.MapToAuction(createAuctionDTO);
             var result = await _repository.CreateAsync(auction);
             if (result.IsFailure)
                 return Result.Failure(result.Error);
@@ -57,7 +57,7 @@ namespace Auction_Service.Application.Services.Implementations
             if (result.Data.Status != Status.NotStarted)
                 return Result.Failure(AuctionErrors.AuctionAlreadyStarted);
 
-            updateAuctionDTO.ApplyToAuction(result.Data);
+            MappingConfig.ApplyToAuction(updateAuctionDTO, result.Data);
             var updateResult = await _repository.UpdateAsync(id, result.Data);
             if (updateResult.IsFailure)
                 return Result.Failure(updateResult.Error);
