@@ -1,8 +1,8 @@
 ﻿using MassTransit;
-using Message_Queue_Logger_Consumer.Data;
-using Message_Queue_Logger_Consumer.Entities;
+using Message_Queue_Log_Consumer_Service.Data;
+using Message_Queue_Log_Consumer_Service.Entities;
 
-namespace Message_Queue_Logger_Consumer.Services
+namespace Message_Queue_Log_Consumer_Service.Services
 {
     public class LogMessageConsumer : IConsumer<LogMessage>
     {

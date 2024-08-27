@@ -7,7 +7,7 @@ using Auction_Service.Application.Services.Implementations;
 
 namespace Auction_Service.Application.Extensions
 {
-    public static class DependencyInjection
+    public static class ApplicationServiceRegistration
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {

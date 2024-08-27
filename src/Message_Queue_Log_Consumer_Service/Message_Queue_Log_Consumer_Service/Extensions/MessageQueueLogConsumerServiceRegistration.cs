@@ -1,16 +1,16 @@
 ﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Message_Queue_Logger_Consumer.Data;
-using Message_Queue_Logger_Consumer.Services;
+using Message_Queue_Log_Consumer_Service.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Message_Queue_Log_Consumer_Service.Services;
 
-namespace Message_Queue_Logger_Consumer.Extensions
+namespace Message_Queue_Log_Consumer_Service.Extensions
 {
-    public static class DependencyInjection
+    public static class MessageQueueLogConsumerServiceRegistration
     {
         public static IServiceCollection AddMessageQueueLoggerConsumerServices(this IServiceCollection services, string connectionString, string rabbitMqHost)
         {
-            services.AddDbContext<LogDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<LogDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddMassTransit(x =>
             {
