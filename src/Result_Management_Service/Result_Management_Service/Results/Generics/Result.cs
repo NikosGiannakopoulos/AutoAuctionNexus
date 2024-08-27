@@ -1,6 +1,6 @@
-﻿using Result_Manager.Errors;
+﻿using Result_Management_Service.Errors;
 
-namespace Result_Manager.Results.Generics
+namespace Result_Management_Service.Results.Generics
 {
     public class Result<T>
     {

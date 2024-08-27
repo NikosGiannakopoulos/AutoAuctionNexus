@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace Message_Queue_Logger
+namespace Message_Queue_Logger_Service
 {
     public class MessageQueueLoggerProvider : ILoggerProvider
     {

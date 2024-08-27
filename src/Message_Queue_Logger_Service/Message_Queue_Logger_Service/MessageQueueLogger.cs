@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace Message_Queue_Logger
+namespace Message_Queue_Logger_Service
 {
     public class MessageQueueLogger : ILogger
     {
@@ -25,7 +25,7 @@ namespace Message_Queue_Logger
                 Source = _categoryName,
                 Level = logLevel.ToString(),
                 Message = formatter(state, exception),
-                Exception = exception?.ToString(),
+                Exception = exception.ToString(),
                 Timestamp = DateTime.UtcNow
             };
 

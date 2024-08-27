@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Message_Queue_Logger.Extensions
+namespace Message_Queue_Logger_Service.Extensions
 {
     public static class MessageQueueLoggerServiceRegistration
     {

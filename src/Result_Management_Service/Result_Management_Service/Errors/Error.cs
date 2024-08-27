@@ -1,4 +1,4 @@
-﻿namespace Result_Manager.Errors
+﻿namespace Result_Management_Service.Errors
 {
     public class Error
     {
