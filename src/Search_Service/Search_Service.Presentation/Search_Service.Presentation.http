@@ -1,0 +1,6 @@
+@Search_Service.Presentation_HostAddress = http://localhost:5165
+
+GET {{Search_Service.Presentation_HostAddress}}/
+Accept: application/json
+
+###
