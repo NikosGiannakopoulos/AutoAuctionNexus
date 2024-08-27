@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Result_Manager\Result_Manager\Result_Manager.csproj" />
+	  <ProjectReference Include="..\..\Result_Management_Service\Result_Management_Service\Result_Management_Service.csproj" />
 	</ItemGroup>
 
 </Project>

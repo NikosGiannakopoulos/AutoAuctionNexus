@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Auction_Service.Domain.Entities;
-using Result_Manager.Results.Generics;
 using Auction_Service.Application.Errors;
 using Auction_Service.Infrastructure.Data;
-using Result_Manager.Results.Non_Generics;
 using Auction_Service.Domain.Repositories.Interfaces;
+using Result_Management_Service.Results.Generics;
+using Result_Management_Service.Results.Non_Generics;
 
 namespace Auction_Service.Infrastructure.Repositories.Implementations
 {

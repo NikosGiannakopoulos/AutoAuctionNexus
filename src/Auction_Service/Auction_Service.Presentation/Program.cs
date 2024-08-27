@@ -1,6 +1,6 @@
-using Message_Queue_Logger.Extensions;
 using Auction_Service.Infrastructure.Data;
 using Auction_Service.Application.Extensions;
+using Message_Queue_Logger_Service.Extensions;
 using Auction_Service.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

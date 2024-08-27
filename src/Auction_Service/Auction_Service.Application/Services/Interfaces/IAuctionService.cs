@@ -1,6 +1,6 @@
-﻿using Result_Manager.Results.Generics;
-using Auction_Service.Application.DTOs;
-using Result_Manager.Results.Non_Generics;
+﻿using Auction_Service.Application.DTOs;
+using Result_Management_Service.Results.Generics;
+using Result_Management_Service.Results.Non_Generics;
 
 namespace Auction_Service.Application.Services.Interfaces
 {

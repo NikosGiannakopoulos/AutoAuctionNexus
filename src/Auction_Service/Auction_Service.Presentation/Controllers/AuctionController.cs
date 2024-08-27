@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Auction_Service.Application.DTOs;
 using Auction_Service.Application.Mappings;
-using Result_Manager.Results.Generics.Extensions;
-using Result_Manager.Results.Non_Generics.Extensions;
 using Auction_Service.Application.Services.Interfaces;
+using Result_Management_Service.Results.Generics.Extensions;
+using Result_Management_Service.Results.Non_Generics.Extensions;
 
 namespace Auction_Service.Presentation.Controllers
 {

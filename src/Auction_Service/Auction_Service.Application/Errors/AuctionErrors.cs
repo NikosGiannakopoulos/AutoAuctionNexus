@@ -1,4 +1,4 @@
-﻿using Result_Manager.Errors;
+﻿using Result_Management_Service.Errors;
 
 namespace Auction_Service.Application.Errors
 {

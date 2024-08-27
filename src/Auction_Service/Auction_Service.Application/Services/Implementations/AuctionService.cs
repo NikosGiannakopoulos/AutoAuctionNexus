@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using Result_Manager.Results.Generics;
 using Auction_Service.Application.DTOs;
 using Auction_Service.Application.Errors;
-using Result_Manager.Results.Non_Generics;
 using Auction_Service.Application.Mappings;
 using Auction_Service.Domain.Entities.Enums;
+using Result_Management_Service.Results.Generics;
+using Result_Management_Service.Results.Non_Generics;
 using Auction_Service.Domain.Repositories.Interfaces;
 using Auction_Service.Application.Services.Interfaces;
 

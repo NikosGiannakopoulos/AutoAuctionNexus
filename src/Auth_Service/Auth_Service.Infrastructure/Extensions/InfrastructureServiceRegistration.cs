@@ -12,9 +12,9 @@ namespace Auth_Service.Infrastructure.Extensions
         {
             services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AuthDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentityCore<IdentityUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AuthDbContext>();
 
             return services;
         }
