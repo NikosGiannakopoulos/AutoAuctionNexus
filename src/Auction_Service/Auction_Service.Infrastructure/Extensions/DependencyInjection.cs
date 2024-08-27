@@ -12,7 +12,7 @@ namespace Auction_Service.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IAuctionRepository, AuctionRepository>();
-            services.AddDbContext<AuctionDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AuctionDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("AuctionsConnection")));
             return services;
         }
     }

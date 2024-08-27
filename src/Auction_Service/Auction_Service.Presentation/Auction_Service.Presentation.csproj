@@ -14,6 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Message_Queue_Logger\Message_Queue_Logger\Message_Queue_Logger.csproj" />
 		<ProjectReference Include="..\..\Result_Manager\Result_Manager\Result_Manager.csproj" />
 		<ProjectReference Include="..\Auction_Service.Application\Auction_Service.Application.csproj" />
 		<ProjectReference Include="..\Auction_Service.Infrastructure\Auction_Service.Infrastructure.csproj" />

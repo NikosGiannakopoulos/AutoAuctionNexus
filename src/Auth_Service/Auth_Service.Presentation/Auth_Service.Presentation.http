@@ -1,0 +1,6 @@
+@Auth_Service.Presentation_HostAddress = http://localhost:5287
+
+GET {{Auth_Service.Presentation_HostAddress}}/
+Accept: application/json
+
+###

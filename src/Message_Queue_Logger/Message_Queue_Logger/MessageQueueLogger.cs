@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 
 namespace Message_Queue_Logger
@@ -23,15 +22,14 @@ namespace Message_Queue_Logger
         {
             var logMessage = new LogMessage
             {
+                Source = _categoryName,
                 Level = logLevel.ToString(),
                 Message = formatter(state, exception),
                 Exception = exception?.ToString(),
                 Timestamp = DateTime.UtcNow
             };
 
-            string jsonFormatLogMessage = JsonSerializer.Serialize(logMessage);
-
-            _publishEndpoint.Publish(jsonFormatLogMessage);
+            _publishEndpoint.Publish(logMessage);
         }
     }
 }

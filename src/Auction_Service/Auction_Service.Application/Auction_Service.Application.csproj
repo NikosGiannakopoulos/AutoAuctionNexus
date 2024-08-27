@@ -13,6 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Message_Queue_Logger\Message_Queue_Logger\Message_Queue_Logger.csproj" />
 		<ProjectReference Include="..\..\Result_Manager\Result_Manager\Result_Manager.csproj" />
 		<ProjectReference Include="..\Auction_Service.Domain\Auction_Service.Domain.csproj" />
 	</ItemGroup>

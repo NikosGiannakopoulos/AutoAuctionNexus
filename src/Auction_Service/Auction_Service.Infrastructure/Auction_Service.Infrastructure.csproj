@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Message_Queue_Logger\Message_Queue_Logger\Message_Queue_Logger.csproj" />
 		<ProjectReference Include="..\..\Result_Manager\Result_Manager\Result_Manager.csproj" />
 		<ProjectReference Include="..\Auction_Service.Application\Auction_Service.Application.csproj" />
 	</ItemGroup>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Auction_Service.Domain.Entities;
 using Auction_Service.Domain.Entities.Enums;
 
@@ -6,30 +7,36 @@ namespace Auction_Service.Infrastructure.Data
 {
     public class AuctionDbInitializer
     {
-        public static void InitDb(AuctionDbContext auctionDbContext)
+        public static void InitDb(AuctionDbContext auctionDbContext, ILogger<AuctionDbInitializer> logger)
         {
             try
             {
+                logger.LogInformation("Starting database migration...");
                 auctionDbContext.Database.Migrate();
+                logger.LogInformation("Database migration completed.");
 
                 if (!auctionDbContext.Auctions.Any())
                 {
-                    SeedData(auctionDbContext);
+                    logger.LogInformation("No existing data found. Seeding data...");
+                    SeedData(auctionDbContext, logger);
+                    logger.LogInformation("Data seeding completed.");
                 }
                 else
                 {
-                    Console.WriteLine("Data already exists - No need to seed.");
+                    logger.LogInformation("Data already exists. No need to seed.");
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"An error occurred while seeding the database: {ex.Message}");
+                logger.LogError(ex, "An error occurred while initializing the database.");
             }
         }
 
-        private static void SeedData(AuctionDbContext auctionDbContext)
+        private static void SeedData(AuctionDbContext auctionDbContext, ILogger logger)
         {
-            var auctions = new List<Auction>()
+            try
+            {
+                var auctions = new List<Auction>()
             {
                 new() {
                     Id = Guid.Parse("bf453e92-57c9-4feb-b19d-7e31e57208f0"),
@@ -333,8 +340,14 @@ namespace Auction_Service.Infrastructure.Data
                 }
             };
 
-            auctionDbContext.AddRange(auctions);
-            auctionDbContext.SaveChanges();
+                auctionDbContext.AddRange(auctions);
+                auctionDbContext.SaveChanges();
+                logger.LogInformation("Seeding of auction data completed successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while seeding the auction data.");
+            }
         }
     }
 }
