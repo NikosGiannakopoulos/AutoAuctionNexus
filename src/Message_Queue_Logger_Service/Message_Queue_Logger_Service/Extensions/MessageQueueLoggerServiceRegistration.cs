@@ -1,6 +1,8 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Message_Queue_Logger_Service.Services.Interfaces;
+using Message_Queue_Logger_Service.Services.Implementations;
 
 namespace Message_Queue_Logger_Service.Extensions
 {
@@ -16,6 +18,7 @@ namespace Message_Queue_Logger_Service.Extensions
                 });
             });
 
+            services.AddScoped<ILogPublisher, LogPublisher>();
             services.AddSingleton<ILoggerProvider, MessageQueueLoggerProvider>();
 
             return services;

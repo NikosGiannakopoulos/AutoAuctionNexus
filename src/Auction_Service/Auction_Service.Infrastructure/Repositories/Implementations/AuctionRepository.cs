@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Auction_Service.Domain.Entities;
 using Auction_Service.Application.Errors;
 using Auction_Service.Infrastructure.Data;
-using Auction_Service.Domain.Repositories.Interfaces;
 using Result_Management_Service.Results.Generics;
+using Auction_Service.Domain.Repositories.Interfaces;
 using Result_Management_Service.Results.Non_Generics;
 
 namespace Auction_Service.Infrastructure.Repositories.Implementations
@@ -28,11 +28,13 @@ namespace Auction_Service.Infrastructure.Repositories.Implementations
                                              .Include(x => x.Vehicle)
                                              .AsNoTracking()
                                              .ToListAsync();
+
+                _logger.LogInformation("All auctions retrieved successfully.");
                 return Result<IEnumerable<Auction>>.Success(auctions);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while retrieving all auctions.");
+                _logger.LogError(ex, "An error occurred while retrieving all auctions.");
                 return Result<IEnumerable<Auction>>.Failure(AuctionErrors.AuctionRetrievalFailed);
             }
         }
@@ -51,11 +53,12 @@ namespace Auction_Service.Infrastructure.Repositories.Implementations
                     return Result<Auction>.Failure(AuctionErrors.AuctionNotFound);
                 }
 
+                _logger.LogInformation("Auction with Id {AuctionId} retrieved successfully.", id);
                 return Result<Auction>.Success(auction);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while retrieving auction with Id {AuctionId}.", id);
+                _logger.LogError(ex, "An error occurred while retrieving auction with Id {AuctionId}.", id);
                 return Result<Auction>.Failure(AuctionErrors.AuctionRetrievalFailed);
             }
         }
@@ -73,7 +76,7 @@ namespace Auction_Service.Infrastructure.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while creating auction.");
+                _logger.LogError(ex, "An error occurred while creating auction.");
                 return Result.Failure(AuctionErrors.AuctionCreationFailed);
             }
         }
@@ -98,7 +101,7 @@ namespace Auction_Service.Infrastructure.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while updating auction with Id {AuctionId}.", id);
+                _logger.LogError(ex, "An error occurred while updating auction with Id {AuctionId}.", id);
                 return Result.Failure(AuctionErrors.AuctionUpdateFailed);
             }
         }
@@ -121,7 +124,7 @@ namespace Auction_Service.Infrastructure.Repositories.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while deleting auction with Id {AuctionId}.", id);
+                _logger.LogError(ex, "An error occurred while deleting auction with Id {AuctionId}.", id);
                 return Result.Failure(AuctionErrors.AuctionDeletionFailed);
             }
         }

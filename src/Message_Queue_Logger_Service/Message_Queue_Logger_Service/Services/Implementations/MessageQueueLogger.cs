@@ -1,17 +1,19 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Message_Queue_Logger_Service.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using Message_Queue_Logger_Service.Services.Interfaces;
 
-namespace Message_Queue_Logger_Service
+namespace Message_Queue_Logger_Service.Services.Implementations
 {
     public class MessageQueueLogger : ILogger
     {
         private readonly string _categoryName;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IServiceProvider _serviceProvider;
 
-        public MessageQueueLogger(string categoryName, IPublishEndpoint publishEndpoint)
+        public MessageQueueLogger(string categoryName, IServiceProvider serviceProvider)
         {
             _categoryName = categoryName;
-            _publishEndpoint = publishEndpoint;
+            _serviceProvider = serviceProvider;
         }
 
         public IDisposable BeginScope<TState>(TState state) where TState : notnull => null;
@@ -20,6 +22,9 @@ namespace Message_Queue_Logger_Service
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            using var scope = _serviceProvider.CreateScope();
+            var logPublisher = scope.ServiceProvider.GetRequiredService<ILogPublisher>();
+
             var logMessage = new LogMessage
             {
                 Source = _categoryName,
@@ -29,7 +34,7 @@ namespace Message_Queue_Logger_Service
                 Timestamp = DateTime.UtcNow
             };
 
-            _publishEndpoint.Publish(logMessage);
+            logPublisher.Publish(logMessage);
         }
     }
 }

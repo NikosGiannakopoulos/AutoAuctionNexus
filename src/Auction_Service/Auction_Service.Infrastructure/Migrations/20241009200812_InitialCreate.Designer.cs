@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Auction_Service.Infrastructure.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20240710183234_InitialCreate")]
+    [Migration("20241009200812_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

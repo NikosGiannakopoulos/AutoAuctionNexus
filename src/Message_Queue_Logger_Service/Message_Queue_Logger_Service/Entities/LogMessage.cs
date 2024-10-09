@@ -1,4 +1,4 @@
-﻿namespace Message_Queue_Logger_Service
+﻿namespace Message_Queue_Logger_Service.Entities
 {
     public class LogMessage
     {
